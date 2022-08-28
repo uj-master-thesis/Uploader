@@ -2,13 +2,20 @@ package com.edu.uj.uploader.uploader.domain.observers;
 
 import com.edu.uj.uploader.uploader.domain.event.AddThreadEvent;
 import com.edu.uj.uploader.uploader.domain.event.EventType;
+import com.edu.uj.uploader.uploader.kafka.outbound.OutboundMessageHandler;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class AddThreadEventObserver implements EventObserver<AddThreadEvent>{
+public class AddThreadEventObserver implements EventObserver<AddThreadEvent> {
+    private final OutboundMessageHandler handler;
+
+    public AddThreadEventObserver(OutboundMessageHandler handler) {
+        this.handler = handler;
+    }
+
     @Override
     public void processEvent(AddThreadEvent event) {
-      log.info(event.getEventType().getName());
+        log.info(event.getEventType().getName());
     }
 
     @Override

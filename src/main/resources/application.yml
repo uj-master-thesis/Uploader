@@ -1,0 +1,13 @@
+news-bus:
+    producer:
+        server: localhost:9092
+        serverPort: 9092
+        batchSize: 16384
+
+kafka:
+    flush:
+        timeoutSeconds: 5
+        maxTries: 3
+
+topics:
+    newsBus: "newsBus"

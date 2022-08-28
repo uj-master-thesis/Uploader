@@ -3,7 +3,7 @@ package com.edu.uj.uploader.uploader.domain.commands;
 import com.edu.uj.uploader.uploader.domain.event.AddThreadEvent;
 import com.edu.uj.uploader.uploader.rest.model.ThreadRequest;
 
-public class AddThreadCommand extends VoidCommand<AddThreadEvent>{
+public class AddThreadCommand extends VoidCommand<AddThreadEvent> {
 
     private final ThreadRequest threadRequest;
 

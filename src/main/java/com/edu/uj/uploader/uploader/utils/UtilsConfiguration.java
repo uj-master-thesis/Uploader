@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 public class UtilsConfiguration {
 
     @Bean
-    ApplicationStop applicationStop(ApplicationContext applicationContext){
+    ApplicationStop applicationStop(ApplicationContext applicationContext) {
         return new ApplicationCloser(applicationContext);
     }
 }
