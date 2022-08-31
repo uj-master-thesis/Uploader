@@ -30,14 +30,19 @@ public class NewsBusBeans {
     }
 
     @Bean
-    NewsBusCommunication newsBusCommunication(@Qualifier("newsBusProducer") Producer<String, String> newsBusProducer,
-                                              @Qualifier("flushExecutor") ThreadPoolTaskExecutor flushExecutor,
-                                              @Value("topics.newsBus") String newsBusTopic,
-                                              FlushConfiguration flushConfiguration,
-                                              ApplicationStop applicationStop
-    ) {
+    OutboundBusMessageHandler outboundBusMessageHandler(@Qualifier("newsBusProducer") Producer<String, String> newsBusProducer,
+                                                        @Qualifier("flushExecutor") ThreadPoolTaskExecutor flushExecutor,
+                                                        @Value("${topics.newsBus}") String newsBusTopic,
+                                                        FlushConfiguration flushConfiguration,
+                                                        ApplicationStop applicationStop) {
         ObjectMapper objectMapper = ObjectMapperFactory.createObjectMapper();
         MessageProducer messageProducer = new MessageProducer(newsBusProducer, flushExecutor, flushConfiguration, applicationStop);
-        return new NewsBusCommunication(new OutboundBusMessageHandler(objectMapper, messageProducer, newsBusTopic));
+        return new OutboundBusMessageHandler(objectMapper, messageProducer, newsBusTopic);
     }
+
+    @Bean
+    NewsBusCommunication newsBusCommunication(OutboundBusMessageHandler outboundBusMessageHandler) {
+        return new NewsBusCommunication(outboundBusMessageHandler);
+    }
+
 }

@@ -4,8 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.producer.ProducerRecord;
+import org.apache.kafka.clients.producer.RecordMetadata;
 
 import java.time.Instant;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class OutboundBusMessageHandler implements OutboundMessageHandler {
@@ -20,13 +23,13 @@ public class OutboundBusMessageHandler implements OutboundMessageHandler {
     }
 
     @Override
-    public void handle(CommonOutboundMessage message) {
+    public void handle(CommonOutboundMessage message, boolean sendSync) {
         if (null != messageProducer) {
             try {
                 String payload = objectMapper.writeValueAsString(message);
                 String type = message.getMessageKey();
                 ProducerRecord<String, String> producerMessage = createProducerMessage(type, payload);
-                sendMessage(producerMessage);
+                sendMessage(producerMessage, sendSync);
             } catch (JsonProcessingException e) {
                 log.error("Failed to serialize a message {}", message);
                 throw new RuntimeException("Failed to serialize message", e);
@@ -40,9 +43,12 @@ public class OutboundBusMessageHandler implements OutboundMessageHandler {
         return new ProducerRecord<>(topic, null, Instant.now().toEpochMilli(), key, payload);
     }
 
-    private void sendMessage(ProducerRecord<String, String> message) {
+    private void sendMessage(ProducerRecord<String, String> message, boolean sendSync) {
         try {
-            messageProducer.send(message);
+            Future<RecordMetadata> metadataFuture = messageProducer.send(message);
+            if (sendSync) {
+                metadataFuture.get(2000, TimeUnit.MILLISECONDS);
+            }
         } catch (Exception e) {
             //TODO: make own exception
             throw new RuntimeException("Failed to send message", e);

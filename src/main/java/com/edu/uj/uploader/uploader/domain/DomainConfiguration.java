@@ -1,5 +1,6 @@
 package com.edu.uj.uploader.uploader.domain;
 
+import com.edu.uj.uploader.uploader.domain.commands.CommandContext;
 import com.edu.uj.uploader.uploader.domain.event.Event;
 import com.edu.uj.uploader.uploader.domain.event.EventPublisher;
 import com.edu.uj.uploader.uploader.domain.event.Publisher;
@@ -9,6 +10,8 @@ import com.edu.uj.uploader.uploader.domain.processing.ConcurrentProcessor;
 import com.edu.uj.uploader.uploader.domain.processing.Processor;
 import com.edu.uj.uploader.uploader.domain.processing.PublishingProcessor;
 import com.edu.uj.uploader.uploader.kafka.NewsBusCommunication;
+import com.edu.uj.uploader.uploader.kafka.outbound.NewsDataConverter;
+import com.edu.uj.uploader.uploader.kafka.outbound.OutboundMessageHandler;
 import com.edu.uj.uploader.uploader.utils.ApplicationStop;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -35,6 +38,11 @@ public class DomainConfiguration {
         return new ConcurrentProcessor(publishingProcessor, applicationStop);
     }
 
+    @Bean
+    NewsDataConverter nodeDataConverter() {
+        return new NewsDataConverter();
+    }
+
     @Bean(initMethod = "bind")
     ObserversBinder wireObservers(Publisher publisher, NewsBusCommunication newsBusCommunication) {
         List<EventObserver<? extends Event>> observers = new LinkedList<>();
@@ -42,7 +50,8 @@ public class DomainConfiguration {
         return new ObserversBinder(publisher, observers);
     }
 
-//    AddThreadEventObserver addThreadEventObserver(@Qualifier("concurrentProcessor") Processor processor){
-//        return new AddThreadEventObserver(processor);
-//    }
+    @Bean
+    CommandContext commandContext(OutboundMessageHandler outboundMessageHandler) {
+        return new CommandContext(outboundMessageHandler);
+    }
 }
