@@ -23,9 +23,6 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.7.3'
     implementation group: 'org.apache.kafka', name: 'kafka-clients', version: '3.2.1'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
-//    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.13.3'
-//    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.3'
-//    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.13.3'
     runtimeOnly 'org.springframework.boot:spring-boot-devtools:2.7.3'
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.7.3'
 }
@@ -45,4 +42,36 @@ publishing {
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
+}
+
+jar {
+    enabled = true
+    configurations.implementation.setCanBeResolved(true)
+    configurations.runtimeOnly.setCanBeResolved(true)
+    configurations.compileOnly.setCanBeResolved(true)
+    manifest {
+        attributes(
+                'Implementation-Title': 'System Jar File',
+                'Implementation-Version': project.version,
+                'Main-Class': 'com.edu.uj.uploader.uploader.UploaderApplication',
+                'Class-Path': configurations.implementation.collect({
+                    "lib/${it.getName()}"
+                } as Closure).join(' ') + ' ' + configurations.runtimeOnly.collect({
+                    "lib/${it.getName()}"
+                } as Closure).join(' ') + ' config/')
+    }
+    doLast {
+        copy {
+            from configurations.implementation
+            into "${jar.destinationDirectory.getAsFile().get()}/lib"
+        }
+        copy {
+            from configurations.runtimeOnly
+            into "${jar.destinationDirectory.getAsFile().get()}/lib"
+        }
+        copy {
+            from "${projectDir.path}/src/main/config"
+            into "${jar.destinationDirectory.getAsFile().get()}/config"
+        }
+    }
 }
