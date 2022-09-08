@@ -15,6 +15,7 @@ public class NewsDataConverter {
         if (null != newsThread) {
             threadProperties.put("name", newsThread.getName());
             threadProperties.put("description", newsThread.getDescription());
+            threadProperties.put("username", newsThread.getUsername());
         }
         return threadProperties;
     }
@@ -25,6 +26,7 @@ public class NewsDataConverter {
             postProperties.put("postName", newsPost.getPostName());
             postProperties.put("threadName", newsPost.getThreadName());
             postProperties.put("url", newsPost.getUrl());
+            postProperties.put("username", newsPost.getUsername());
             postProperties.put("description", newsPost.getDescription());
         }
         return postProperties;
@@ -45,6 +47,7 @@ public class NewsDataConverter {
         Map<String, Object> voteProperties = new HashMap<>();
         if (null != newsVote) {
             voteProperties.put("voteType", newsVote.getVoteType());
+            voteProperties.put("username", newsVote.getUsername());
             voteProperties.put("postNumber", newsVote.getPostNumber());
         }
         return voteProperties;

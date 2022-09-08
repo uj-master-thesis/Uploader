@@ -8,17 +8,20 @@ public class PostRequest {
     private final String threadName;
     private final String url;
     private final String description;
+    private final String username;
 
     @JsonCreator
     public PostRequest(
             @JsonProperty("postName") String postName,
             @JsonProperty("threadName") String threadName,
             @JsonProperty("url") String url,
-            @JsonProperty("description") String description) {
+            @JsonProperty("description") String description,
+            @JsonProperty("username") String username ) {
         this.postName = postName;
         this.threadName = threadName;
         this.url = url;
         this.description = description;
+        this.username = username;
     }
 
     public String getPostName() {
@@ -35,6 +38,10 @@ public class PostRequest {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
     @Override

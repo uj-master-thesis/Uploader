@@ -7,13 +7,16 @@ public class ThreadRequest {
 
     private final String name;
     private final String description;
+    private final String username;
 
     @JsonCreator
     public ThreadRequest(
             @JsonProperty("name") String name,
-            @JsonProperty("description") String description) {
+            @JsonProperty("description") String description,
+            @JsonProperty("username") String username) {
         this.name = name;
         this.description = description;
+        this.username = username;
     }
 
     @Override
@@ -21,6 +24,7 @@ public class ThreadRequest {
         return "ThreadRequest{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", username='" + username + '\'' +
                 '}';
     }
 
@@ -30,5 +34,9 @@ public class ThreadRequest {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getUsername() {
+        return username;
     }
 }
