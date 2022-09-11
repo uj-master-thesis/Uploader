@@ -40,9 +40,4 @@ public class NewsBusBeans {
         return new OutboundBusMessageHandler(objectMapper, messageProducer, newsBusTopic);
     }
 
-    @Bean
-    NewsBusCommunication newsBusCommunication(OutboundBusMessageHandler outboundBusMessageHandler) {
-        return new NewsBusCommunication(outboundBusMessageHandler);
-    }
-
 }

@@ -6,9 +6,11 @@ import com.edu.uj.uploader.uploader.kafka.outbound.NewsDataConverter;
 import com.edu.uj.uploader.uploader.kafka.outbound.NewsOutboundMessageBuilder;
 import com.edu.uj.uploader.uploader.kafka.outbound.OutboundMessageHandler;
 import com.edu.uj.uploader.uploader.rest.model.PostRequest;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 
+@Slf4j
 public class AddPostCommand extends VoidCommand<AddPostEvent> {
 
     private final PostRequest postRequest;
@@ -33,12 +35,14 @@ public class AddPostCommand extends VoidCommand<AddPostEvent> {
 
     @Override
     public void process() {
+        log.info("Post before converting: {}", postRequest);
         Map<String, Object> data = newsDataConverter.convert(postRequest);
         NewsBusOutboundMessage newsBusOutboundMessage = NewsOutboundMessageBuilder.builder()
                 .withVersion(1)
                 .withAction("addPost")
                 .withData(data)
                 .build();
+        log.info("Post after converting: {}", newsBusOutboundMessage);
         outboundMessageHandler.handle(newsBusOutboundMessage, true);
     }
 

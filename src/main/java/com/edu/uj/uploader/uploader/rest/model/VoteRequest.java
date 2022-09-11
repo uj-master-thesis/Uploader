@@ -6,36 +6,36 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class VoteRequest {
     private final String voteType;
     private final String username;
-    private final int postNumber;
+    private final String postName;
 
     @JsonCreator
     public VoteRequest(
             @JsonProperty("voteType") String voteType,
             @JsonProperty("username") String username,
-            @JsonProperty("postNumber") int postNumber) {
+            @JsonProperty("postName") String postName) {
         this.voteType = voteType;
         this.username = username;
-        this.postNumber = postNumber;
+        this.postName = postName;
     }
 
     public String getVoteType() {
         return voteType;
     }
 
-    public int getPostNumber() {
-        return postNumber;
-    }
-
     public String getUsername() {
         return username;
+    }
+
+    public String getPostName() {
+        return postName;
     }
 
     @Override
     public String toString() {
         return "VoteRequest{" +
                 "voteType='" + voteType + '\'' +
-                ", postNumber=" + postNumber +
-                ", username=" + username +
+                ", username='" + username + '\'' +
+                ", postName='" + postName + '\'' +
                 '}';
     }
 }

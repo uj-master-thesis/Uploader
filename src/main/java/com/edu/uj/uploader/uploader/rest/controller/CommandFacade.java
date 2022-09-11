@@ -1,12 +1,10 @@
 package com.edu.uj.uploader.uploader.rest.controller;
 
 import com.edu.uj.uploader.uploader.domain.commands.*;
+import com.edu.uj.uploader.uploader.domain.model.SubscribedUser;
 import com.edu.uj.uploader.uploader.domain.processing.Processor;
 import com.edu.uj.uploader.uploader.kafka.outbound.NewsDataConverter;
-import com.edu.uj.uploader.uploader.rest.model.CommentRequest;
-import com.edu.uj.uploader.uploader.rest.model.PostRequest;
-import com.edu.uj.uploader.uploader.rest.model.ThreadRequest;
-import com.edu.uj.uploader.uploader.rest.model.VoteRequest;
+import com.edu.uj.uploader.uploader.rest.model.*;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
@@ -45,5 +43,18 @@ public class CommandFacade implements InboundRestPort {
     public void addVote(VoteRequest voteRequest) {
         AddVoteCommand addVoteCommand = new AddVoteCommand(voteRequest, commandContext, newsDataConverter);
         processor.process(addVoteCommand);
+    }
+
+    @Override
+    public SubscribedUser getSubscribedUser(String username) {
+        GetUserSubscribedCommand getUserSubscribedCommand = new GetUserSubscribedCommand(username, commandContext);
+        return processor.process(getUserSubscribedCommand);
+    }
+
+    @Override
+    public void addSubscriptionUser(SubscribeRequest request) {
+        SubscribedUser subscribedUser = new SubscribedUser(request.getUsername(), request.getSubscribed());
+        AddSubscriptionCommand addSubscriptionCommand = new AddSubscriptionCommand(subscribedUser);
+        processor.process(addSubscriptionCommand);
     }
 }

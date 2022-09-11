@@ -1,9 +1,7 @@
 package com.edu.uj.uploader.uploader.rest.controller;
 
-import com.edu.uj.uploader.uploader.rest.model.CommentRequest;
-import com.edu.uj.uploader.uploader.rest.model.PostRequest;
-import com.edu.uj.uploader.uploader.rest.model.ThreadRequest;
-import com.edu.uj.uploader.uploader.rest.model.VoteRequest;
+import com.edu.uj.uploader.uploader.domain.model.SubscribedUser;
+import com.edu.uj.uploader.uploader.rest.model.*;
 
 public interface InboundRestPort {
 
@@ -14,4 +12,8 @@ public interface InboundRestPort {
     void addComment(CommentRequest commentRequest);
 
     void addVote(VoteRequest voteRequest);
+
+    SubscribedUser getSubscribedUser(String username);
+
+    void addSubscriptionUser(SubscribeRequest request);
 }

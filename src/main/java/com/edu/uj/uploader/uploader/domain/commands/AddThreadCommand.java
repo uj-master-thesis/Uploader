@@ -6,9 +6,11 @@ import com.edu.uj.uploader.uploader.kafka.outbound.NewsDataConverter;
 import com.edu.uj.uploader.uploader.kafka.outbound.NewsOutboundMessageBuilder;
 import com.edu.uj.uploader.uploader.kafka.outbound.OutboundMessageHandler;
 import com.edu.uj.uploader.uploader.rest.model.ThreadRequest;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 
+@Slf4j
 public class AddThreadCommand extends VoidCommand<AddThreadEvent> {
 
     private final ThreadRequest threadRequest;
@@ -34,11 +36,13 @@ public class AddThreadCommand extends VoidCommand<AddThreadEvent> {
     @Override
     public void process() {
         Map<String, Object> data = newsDataConverter.convert(threadRequest);
+        log.info("Thread before converting: {}", threadRequest);
         NewsBusOutboundMessage newsBusOutboundMessage = NewsOutboundMessageBuilder.builder()
                 .withVersion(1)
                 .withAction("addThread")
                 .withData(data)
                 .build();
+        log.info("Thread after converting: {}", newsBusOutboundMessage);
         outboundMessageHandler.handle(newsBusOutboundMessage, true);
     }
 

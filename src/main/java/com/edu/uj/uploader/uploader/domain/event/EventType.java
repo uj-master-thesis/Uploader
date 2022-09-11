@@ -6,6 +6,7 @@ public enum EventType {
     ADD_POST_EVENT("addPostEvent"),
     ADD_COMMENT_EVENT("addCommentEvent"),
     ADD_VOTE_EVENT("addVoteEvent"),
+    ADD_SUBSCRIPTION_EVENT("addSubscriptionEvent"),
     EMPTY_EVENT("emptyEvent");
     private final String name;
 

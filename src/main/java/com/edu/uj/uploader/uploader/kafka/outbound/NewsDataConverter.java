@@ -36,7 +36,7 @@ public class NewsDataConverter {
         Map<String, Object> commentProperties = new HashMap<>();
         if (null != newsComment) {
             commentProperties.put("text", newsComment.getText());
-            commentProperties.put("postId", newsComment.getPostId());
+            commentProperties.put("postName", newsComment.getPostName());
             commentProperties.put("username", newsComment.getUsername());
             commentProperties.put("duration", newsComment.getDuration());
         }
@@ -48,7 +48,7 @@ public class NewsDataConverter {
         if (null != newsVote) {
             voteProperties.put("voteType", newsVote.getVoteType());
             voteProperties.put("username", newsVote.getUsername());
-            voteProperties.put("postNumber", newsVote.getPostNumber());
+            voteProperties.put("postName", newsVote.getPostName());
         }
         return voteProperties;
     }

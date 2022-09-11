@@ -6,18 +6,18 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class CommentRequest {
 
     private final String text;
-    private final String postId;
+    private final String postName;
     private final String username;
     private final String duration;
 
     @JsonCreator
     public CommentRequest(
             @JsonProperty("text") String text,
-            @JsonProperty("postId") String postId,
+            @JsonProperty("postName") String postName,
             @JsonProperty("username") String username,
             @JsonProperty("duration") String duration) {
         this.text = text;
-        this.postId = postId;
+        this.postName = postName;
         this.username = username;
         this.duration = duration;
     }
@@ -26,8 +26,8 @@ public class CommentRequest {
         return text;
     }
 
-    public String getPostId() {
-        return postId;
+    public String getPostName() {
+        return postName;
     }
 
     public String getUsername() {

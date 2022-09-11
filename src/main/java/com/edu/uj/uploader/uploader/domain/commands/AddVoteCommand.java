@@ -6,9 +6,11 @@ import com.edu.uj.uploader.uploader.kafka.outbound.NewsDataConverter;
 import com.edu.uj.uploader.uploader.kafka.outbound.NewsOutboundMessageBuilder;
 import com.edu.uj.uploader.uploader.kafka.outbound.OutboundMessageHandler;
 import com.edu.uj.uploader.uploader.rest.model.VoteRequest;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;
 
+@Slf4j
 public class AddVoteCommand extends VoidCommand<AddVoteEvent> {
     private final VoteRequest voteRequest;
     private final OutboundMessageHandler outboundMessageHandler;
@@ -32,12 +34,14 @@ public class AddVoteCommand extends VoidCommand<AddVoteEvent> {
 
     @Override
     public void process() {
+        log.info("Vote before converting: {}", voteRequest);
         Map<String, Object> data = newsDataConverter.convert(voteRequest);
         NewsBusOutboundMessage newsBusOutboundMessage = NewsOutboundMessageBuilder.builder()
                 .withVersion(1)
                 .withAction("addVote")
                 .withData(data)
                 .build();
+        log.info("Vote after converting: {}", newsBusOutboundMessage);
         outboundMessageHandler.handle(newsBusOutboundMessage, true);
     }
 

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @Slf4j
-@RestController()
+@RestController
 public class ControllerReceiverEndpoint {
 
     private final InboundRestPort inboundRestPort;

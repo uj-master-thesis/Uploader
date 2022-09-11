@@ -16,7 +16,7 @@ public class PostRequest {
             @JsonProperty("threadName") String threadName,
             @JsonProperty("url") String url,
             @JsonProperty("description") String description,
-            @JsonProperty("username") String username ) {
+            @JsonProperty("username") String username) {
         this.postName = postName;
         this.threadName = threadName;
         this.url = url;

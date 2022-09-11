@@ -1,13 +1,34 @@
 news-bus:
-    producer:
-        server: localhost:9092
-        serverPort: 9092
-        batchSize: 16384
-        bufferMemory: 33554432
+  producer:
+    server: localhost:9092
+    serverPort: 9092
+    batchSize: 16384
+    bufferMemory: 33554432
 kafka:
-    flush:
-        timeoutSeconds: 5
-        maxTries: 3
+  flush:
+    timeoutSeconds: 5
+    maxTries: 3
 
 topics:
-    newsBus: "topic_test"
+  newsBus: "topic_test"
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5435/uploaderdb
+    username: user1
+    password:
+    hikari:
+      schema: uj
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+  flyway:
+    locations: classpath:db/migration
+    schemas: uj
+    url: jdbc:postgresql://localhost:5435/uploaderdb
+    user: user1
+    password:
+  mail:
+    host: localhost
+    port: 1025
+    username: noreply@gmail.com
+    password:
