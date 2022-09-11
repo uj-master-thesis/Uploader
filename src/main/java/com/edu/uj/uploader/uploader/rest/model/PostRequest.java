@@ -9,6 +9,7 @@ public class PostRequest {
     private final String url;
     private final String description;
     private final String username;
+    private final String fileCompressed;
 
     @JsonCreator
     public PostRequest(
@@ -16,12 +17,14 @@ public class PostRequest {
             @JsonProperty("threadName") String threadName,
             @JsonProperty("url") String url,
             @JsonProperty("description") String description,
-            @JsonProperty("username") String username) {
+            @JsonProperty("username") String username,
+            @JsonProperty("fileCompressed") String fileCompressed) {
         this.postName = postName;
         this.threadName = threadName;
         this.url = url;
         this.description = description;
         this.username = username;
+        this.fileCompressed = fileCompressed;
     }
 
     public String getPostName() {
@@ -44,6 +47,10 @@ public class PostRequest {
         return username;
     }
 
+    public String getFileCompressed() {
+        return fileCompressed;
+    }
+
     @Override
     public String toString() {
         return "PostRequest{" +
@@ -51,6 +58,8 @@ public class PostRequest {
                 ", threadName='" + threadName + '\'' +
                 ", url='" + url + '\'' +
                 ", description='" + description + '\'' +
+                ", username='" + username + '\'' +
+                ", fileCompressed='" + fileCompressed + '\'' +
                 '}';
     }
 }

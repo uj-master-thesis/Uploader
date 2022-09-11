@@ -26,6 +26,7 @@ public class NewsDataConverter {
             postProperties.put("postName", newsPost.getPostName());
             postProperties.put("threadName", newsPost.getThreadName());
             postProperties.put("url", newsPost.getUrl());
+            postProperties.put("fileCompressed", newsPost.getFileCompressed());
             postProperties.put("username", newsPost.getUsername());
             postProperties.put("description", newsPost.getDescription());
         }
