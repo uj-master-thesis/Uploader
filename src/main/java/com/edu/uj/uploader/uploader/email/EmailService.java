@@ -2,10 +2,8 @@ package com.edu.uj.uploader.uploader.email;
 
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.stereotype.Component;
 
-@Component
-public class EmailService {
+public class EmailService implements NotificationService {
 
     private final JavaMailSender emailSender;
 
@@ -13,7 +11,8 @@ public class EmailService {
         this.emailSender = emailSender;
     }
 
-    public void sendSimpleMessage(
+    @Override
+    public void sendMessage(
             String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(to);

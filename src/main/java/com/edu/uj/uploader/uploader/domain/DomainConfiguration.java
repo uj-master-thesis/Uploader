@@ -11,15 +11,18 @@ import com.edu.uj.uploader.uploader.domain.processing.ConcurrentProcessor;
 import com.edu.uj.uploader.uploader.domain.processing.Processor;
 import com.edu.uj.uploader.uploader.domain.processing.PublishingProcessor;
 import com.edu.uj.uploader.uploader.email.EmailService;
+import com.edu.uj.uploader.uploader.email.NotificationService;
 import com.edu.uj.uploader.uploader.kafka.outbound.NewsDataConverter;
 import com.edu.uj.uploader.uploader.kafka.outbound.OutboundMessageHandler;
 import com.edu.uj.uploader.uploader.persistence.datastore.DatabaseTypesConverter;
 import com.edu.uj.uploader.uploader.persistence.datastore.Datastore;
+import com.edu.uj.uploader.uploader.persistence.datastore.DatastoreSQL;
 import com.edu.uj.uploader.uploader.persistence.repositories.DbSubscribedUserDao;
 import com.edu.uj.uploader.uploader.utils.ApplicationStop;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.mail.javamail.JavaMailSender;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -48,8 +51,13 @@ public class DomainConfiguration {
     }
 
     @Bean
-    ObserversBeans databaseObservers(Datastore datastore, EmailService emailService) {
-        return new ObserversBeans(datastore, emailService);
+    NotificationService notificationService(JavaMailSender javaMailSender) {
+        return new EmailService(javaMailSender);
+    }
+
+    @Bean
+    ObserversBeans databaseObservers(Datastore datastore, NotificationService notificationService) {
+        return new ObserversBeans(datastore, notificationService);
     }
 
     @Bean(initMethod = "bind")
@@ -61,7 +69,7 @@ public class DomainConfiguration {
 
     @Bean
     Datastore datastore(DbSubscribedUserDao dbSubscribedUserDao) {
-        return new Datastore(dbSubscribedUserDao, new DatabaseTypesConverter());
+        return new DatastoreSQL(dbSubscribedUserDao, new DatabaseTypesConverter());
     }
 
     @Bean

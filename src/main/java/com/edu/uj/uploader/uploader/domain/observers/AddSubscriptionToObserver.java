@@ -9,13 +9,13 @@ import com.edu.uj.uploader.uploader.persistence.model.DbSubscribedUser;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class AddSubscriptionToDbObserver implements EventObserver<AddSubscriptionEvent> {
-    private final Datastore datastore;
+public class AddSubscriptionToObserver implements EventObserver<AddSubscriptionEvent> {
+    private final Datastore datastoreSQL;
     private final DatabaseTypesConverter converter;
 
-    public AddSubscriptionToDbObserver(Datastore datastore) {
-        this.datastore = datastore;
-        this.converter = datastore.getDatabaseTypesConverter();
+    public AddSubscriptionToObserver(Datastore datastore, DatabaseTypesConverter databaseTypesConverter) {
+        this.datastoreSQL = datastore;
+        this.converter = databaseTypesConverter;
     }
 
     @Override
@@ -23,7 +23,7 @@ public class AddSubscriptionToDbObserver implements EventObserver<AddSubscriptio
         if (event.getCommandResult().getResult().equals(Result.SUCCESS)) {
             DbSubscribedUser dbSubscribedUser = converter.toDbSubscribedUser(event.getSubscribedUser());
             log.info("Adding subscribedUser to database: {}", dbSubscribedUser);
-            this.datastore.setSubscribedUser(dbSubscribedUser);
+            this.datastoreSQL.setSubscribedUser(dbSubscribedUser);
         } else {
             log.info("Failed to add subscribedUser to database");
         }
@@ -36,6 +36,6 @@ public class AddSubscriptionToDbObserver implements EventObserver<AddSubscriptio
 
     @Override
     public String observerName() {
-        return AddSubscriptionToDbObserver.class.getSimpleName();
+        return AddSubscriptionToObserver.class.getSimpleName();
     }
 }
